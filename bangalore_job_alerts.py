@@ -1,4 +1,5 @@
 # bangalore_job_alerts.py
+from telegram.ext import CommandHandler
 
 import requests
 from bs4 import BeautifulSoup
@@ -7,6 +8,18 @@ import schedule
 import threading
 import time
 import asyncio
+async def jobs(update, context):
+    text = (
+        "📊 *Today's Bangalore Job Summary*\n\n"
+        "• Finance roles\n"
+        "• Analytics roles\n"
+        "• Data & high-paying positions\n\n"
+        "📍 Location: Bangalore\n"
+        "🏢 Companies: Top 50 companies in India\n\n"
+        "⏰ Full detailed alerts are sent daily at *10 PM*.\n"
+        "Stay tuned ✅"
+    )
+    await update.message.reply_text(text, parse_mode="Markdown")
 
 # =============================
 # 1️⃣ TELEGRAM DETAILS
@@ -141,7 +154,10 @@ def scheduler(app):
 if __name__ == "__main__":
     app = ApplicationBuilder().token(TELEGRAM_TOKEN).build()
 
+    app.add_handler(CommandHandler("jobs", jobs))
+
     threading.Thread(target=scheduler, args=(app,), daemon=True).start()
 
     print("✅ Bangalore Job Alert Bot is running...")
     app.run_polling()
+
