@@ -1,0 +1,30 @@
+name: Daily Bangalore Job Alert
+
+on:
+  schedule:
+    - cron: '30 16 * * *'  # 10:00 PM IST
+  workflow_dispatch:
+
+jobs:
+  send-alert:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run job alert
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          CHAT_ID: ${{ secrets.CHAT_ID }}
+        run: python bangalore_job_alerts.py
+Add daily job alert workflow
+Commit directly to the main branch
